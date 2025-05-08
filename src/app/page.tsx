@@ -1,4 +1,5 @@
 import { Inter, Montserrat } from "next/font/google";
+import Link from "next/link";
 
 // Fonts
 const inter = Inter({ subsets: ["latin"] });
@@ -8,15 +9,38 @@ const montserrat = Montserrat({
 });
 
 export default function Home() {
+  // Numéro de téléphone défini comme une constante pour aider à la détection par Google Ads
+  const phoneNumber = "06 30 17 45 63";
+
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Meta section pour Google Ads - contient le numéro en texte brut */}
+      <div
+        className="sr-only"
+        itemProp="telephone"
+        itemScope
+        itemType="http://schema.org/ContactPoint"
+      >
+        <span>Appelez le </span>
+        <span itemProp="telephone">{phoneNumber}</span>
+        <span itemProp="contactType">Service Client CENTRALE VTC 06</span>
+        <meta itemProp="contactOption" content="TollFree" />
+        <meta itemProp="areaServed" content="FR" />
+        <meta itemProp="availableLanguage" content="French" />
+      </div>
+
+      {/* Numéro de téléphone en texte simple, visible pour les robots mais caché pour les utilisateurs */}
+      <div aria-hidden="true" className="text-xs opacity-0 absolute">
+        Pour réserver un VTC, appelez-nous au {phoneNumber}
+      </div>
+
       {/* Hero Section */}
       <section className="relative bg-indigo-900 text-white">
         {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-indigo-800 to-blue-900 opacity-90"></div>
 
         {/* Background pattern */}
-        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-10"></div>
+        <div className="absolute inset-0 opacity-10"></div>
 
         <div className="relative max-w-6xl mx-auto px-4 py-20 md:py-28 flex flex-col items-center text-center">
           <h1
@@ -31,7 +55,16 @@ export default function Home() {
             Votre service de transport privé de luxe sur la Côte d&apos;Azur
           </p>
 
-          <a href="tel:0630174563" className="group">
+          {/* Numéro de téléphone en texte normal avant le bouton */}
+          <p className="mb-4 text-white">
+            Appelez-nous: <span className="font-bold">{phoneNumber}</span>
+          </p>
+
+          <a
+            href={`tel:0630174563`}
+            className="group"
+            aria-label={`Appeler le ${phoneNumber}`}
+          >
             <div className="bg-white text-indigo-900 rounded-full px-8 py-4 font-bold text-xl md:text-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
               <span className="flex items-center gap-3">
                 <svg
@@ -48,7 +81,7 @@ export default function Home() {
                     d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
                   />
                 </svg>
-                06 30 17 45 63
+                {phoneNumber}
               </span>
             </div>
           </a>
@@ -166,31 +199,65 @@ export default function Home() {
           >
             Réservez votre course dès maintenant
           </h2>
-          <p className="text-lg mb-8 text-indigo-100">
+          <p className="text-lg mb-3 text-indigo-100">
             Service disponible 24h/24 et 7j/7 - Réservation instantanée
           </p>
 
+          {/* Numéro de téléphone en texte normal pour aider Google Ads à le détecter */}
+          <p className="text-white mb-8">
+            Pour réserver, appelez directement le{" "}
+            <span className="font-bold">06 30 17 45 63</span>
+          </p>
+
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
-            <a
-              href="tel:0630174563"
-              className="bg-white text-indigo-900 rounded-lg px-6 py-3 font-semibold text-lg flex items-center gap-2 hover:bg-amber-400 transition-colors duration-300"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-5 h-5"
+            {/* Encadré du numéro bien visible */}
+            <div className="w-full md:w-auto p-4 bg-white/10 rounded-lg mb-4 md:mb-0">
+              <p className="text-white mb-1">Notre numéro de téléphone :</p>
+              <p className="text-2xl font-bold text-amber-400">
+                06 30 17 45 63
+              </p>
+            </div>
+
+            <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
+              <a
+                href="tel:0630174563"
+                className="bg-white text-indigo-900 rounded-lg px-6 py-3 font-semibold text-lg flex items-center gap-2 hover:bg-amber-400 transition-colors duration-300"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
-                />
-              </svg>
-              06 30 17 45 63
-            </a>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-5 h-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
+                  />
+                </svg>
+                06 30 17 45 63
+              </a>
+
+              <button className="bg-amber-500 text-white rounded-lg px-6 py-3 font-semibold text-lg flex items-center gap-2 hover:bg-amber-600 transition-colors duration-300">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-5 h-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"
+                  />
+                </svg>
+                Réserver en ligne
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -356,6 +423,46 @@ export default function Home() {
                   06 30 17 45 63
                 </a>
               </div>
+            </div>
+
+            <div className="md:text-right">
+              <h4 className={`${montserrat.className} text-lg font-bold mb-4`}>
+                Liens Rapides
+              </h4>
+              <ul className="space-y-2">
+                <li>
+                  <Link
+                    href="/services"
+                    className="text-gray-300 hover:text-white hover:underline transition-colors"
+                  >
+                    Nos Services
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/reservation"
+                    className="text-gray-300 hover:text-white hover:underline transition-colors"
+                  >
+                    Réservation
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/tarifs"
+                    className="text-gray-300 hover:text-white hover:underline transition-colors"
+                  >
+                    Tarifs
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/contact"
+                    className="text-gray-300 hover:text-white hover:underline transition-colors"
+                  >
+                    Contact
+                  </Link>
+                </li>
+              </ul>
             </div>
           </div>
 
