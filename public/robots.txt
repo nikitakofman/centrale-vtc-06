@@ -1,0 +1,21 @@
+# Centrale VTC 06 - Robots.txt
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Sitemaps
+Sitemap: https://www.centrale-vtc-06.fr/sitemap.xml
+
+# Crawl-delay for politeness
+Crawl-delay: 1
+
+# Allow Google bots full access
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+# Allow Bing bot
+User-agent: Bingbot
+Allow: /

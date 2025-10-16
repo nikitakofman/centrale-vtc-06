@@ -1,852 +1,653 @@
+import Image from "next/image";
 import { Inter, Montserrat } from "next/font/google";
-import Link from "next/link";
-import Head from "next/head";
+import Script from "next/script";
 
-// Fonts
 const inter = Inter({ subsets: ["latin"] });
 const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
 
-export default function Home() {
-  // Format E.164 requis par Google selon la documentation:
-  // Numéro au format texte standard pour affichage
-  const phoneNumberDisplay = "06 30 17 45 63";
-  // Numéro au format E.164 pour le code source (format recommandé par Google)
-  const phoneNumberE164 = "+33630174563";
-  // URL pour les liens cliquables
-  const phoneNumberHref = "tel:+33630174563";
+const phoneNumberDisplay = "06 30 17 45 63";
+const phoneNumberE164 = "+33630174563";
+const phoneNumberHref = "tel:+33630174563";
 
+const highlights = [
+  {
+    title: "Centralisation VTC Premium",
+    description:
+      "Une centrale unique qui coordonne nos chauffeurs privés à Nice, Cannes, Menton et Monaco.",
+  },
+  {
+    title: "Disponibilité 24h/24",
+    description:
+      "Prise en charge immédiate jour et nuit pour les arrivées, départs, congrès et soirées événementielles.",
+  },
+  {
+    title: "Tarifs fixes et transparents",
+    description:
+      "Chaque trajet est confirmé à l'avance, sans surprise ni majoration selon l'affluence ou la météo.",
+  },
+  {
+    title: "Véhicules haut de gamme",
+    description:
+      "Mercedes Classe E et V, Tesla, berlines business – confort premium adapté aux particuliers et entreprises.",
+  },
+];
+
+const cities = [
+  {
+    id: "cannes",
+    image: "/taxiinlines.jpeg",
+    imageAlt: "Vue nocturne de Cannes avec véhicules premium en service VTC.",
+    vtcTitle: "VTC Cannes",
+    vtcText:
+      "Besoin d’un chauffeur privé à Cannes ? Nos VTC vous accompagnent avec élégance sur la célèbre Croisette, entre les palais de luxe, le Palais des Festivals et les plages mythiques de la ville. Que vous arriviez à la gare de Cannes, à votre hôtel ou à votre résidence, profitez d’un transfert confortable vers Nice, Antibes, ou Mougins. Nos chauffeurs professionnels, disponibles 24h/24, vous assurent des trajets ponctuels et haut de gamme, que ce soit pour vos soirées sur le port, vos déplacements professionnels ou vos événements sur la Côte d’Azur.",
+    taxiTitle: "Taxi Cannes",
+    taxiText:
+      "Besoin d’un taxi à Cannes ? Nos chauffeurs vous accompagnent avec élégance sur la célèbre Croisette, entre les palais de luxe, le Palais des Festivals et les plages privées les plus réputées de la Côte d’Azur. Que vous arriviez à la gare SNCF de Cannes, à votre hôtel ou à votre villa, nous assurons des trajets rapides et confortables vers l’aéroport de Nice, Antibes, ou Mougins. Profitez d’un service de taxi fiable, disponible 24h/24, pour vos soirées sur le port, vos rendez-vous professionnels ou vos transferts vers les événements internationaux du cinéma.",
+  },
+  {
+    id: "nice",
+    image: "/herobigtaxi.jpeg",
+    imageAlt: "Promenade des Anglais à Nice au coucher du soleil.",
+    vtcTitle: "VTC Nice",
+    vtcText:
+      "À la recherche d’un chauffeur à Nice ? Découvrez la ville en toute sérénité à bord de nos véhicules haut de gamme. Parcourez la Promenade des Anglais, le Vieux-Nice, le Cours Saleya, ou les hauteurs du Mont Boron avec un chauffeur expérimenté. Nous assurons également vos transferts depuis ou vers l’aéroport de Nice Côte d’Azur, les hôtels du centre, Monaco, Cannes, ou Menton. Nos VTC à Nice allient confort, discrétion et efficacité, avec des tarifs fixes sans surprise pour vos trajets professionnels ou touristiques.",
+    taxiTitle: "Taxi Nice",
+    taxiText:
+      "À la recherche d’un taxi à Nice ? Profitez d’un service de transport local pour découvrir la Promenade des Anglais, la vieille ville, le Cours Saleya et les panoramas du Mont Boron. Nos chauffeurs vous conduisent également vers l’aéroport de Nice Côte d’Azur, les quartiers de Cimiez, Fabron ou Magnan, ou encore vers Cannes, Monaco et Menton. Que ce soit pour un transfert hôtel, une visite touristique ou un déplacement professionnel, nos taxis à Nice garantissent confort, ponctualité et tarif fixe sans surprise.",
+  },
+  {
+    id: "menton",
+    image: "/herotaxi.jpeg",
+    imageAlt: "Vue sur Menton et ses façades colorées en bord de mer.",
+    vtcTitle: "VTC Menton",
+    vtcText:
+      "Profitez d’un service de VTC à Menton pour découvrir la “Perle de la France” en toute tranquillité. Nos chauffeurs privés vous conduisent vers les jardins Biovès, le musée Jean Cocteau, les plages du Fossan, ou les petites ruelles du vieux Menton. Que vous ayez besoin d’un transfert vers Monaco, Roquebrune-Cap-Martin, Nice, ou même l’Italie, nos VTC s’adaptent à vos besoins avec ponctualité et élégance. C’est le moyen idéal pour voyager confortablement sur la Côte d’Azur, que ce soit pour affaires ou pour le plaisir.",
+    taxiTitle: "Taxi Menton",
+    taxiText:
+      "Envie de découvrir Menton, la “Perle de la France” ? Réservez votre taxi pour explorer les jardins Biovès, le musée Jean Cocteau, les plages du Fossan ou les ruelles colorées du vieux Menton. Nos chauffeurs locaux assurent vos transferts vers Monaco, Roquebrune-Cap-Martin, ou l’aéroport de Nice. Profitez d’un service sur mesure, idéal pour vos séjours touristiques, déplacements professionnels ou liaisons transfrontalières avec l’Italie toute proche. Avec nos taxis à Menton, confort et sérénité sont toujours au rendez-vous.",
+  },
+  {
+    id: "monaco",
+    image: "/niceairpot.jpeg",
+    imageAlt: "Vue aérienne du port de Monaco avec yachts de luxe.",
+    vtcTitle: "VTC Monaco",
+    vtcText:
+      "Nos chauffeurs privés à Monaco vous offrent une expérience de transport d’exception au cœur de la Principauté. Déplacez-vous facilement entre le Casino de Monte-Carlo, le Port Hercule, le Palais Princier et les hôtels de prestige comme le Fairmont ou l’Hôtel de Paris. Nos VTC assurent également vos transferts vers l’aéroport de Nice, Cannes, Eze ou Menton. Service haut de gamme, discrétion et confort absolu : avec nos VTC à Monaco, voyagez avec style et sérénité sur l’ensemble de la Côte d’Azur.",
+    taxiTitle: "Taxi Monaco",
+    taxiText:
+      "Réservez un taxi à Monaco pour circuler facilement dans la Principauté et ses environs. Nos chauffeurs professionnels vous transportent vers le Casino de Monte-Carlo, le Port Hercule, le Palais Princier, ou les hôtels prestigieux comme le Fairmont ou l’Hôtel de Paris. Nous assurons également vos transferts vers l’aéroport de Nice, Cannes, Eze ou Menton. En choisissant notre service de taxi à Monaco, vous bénéficiez d’une expérience haut de gamme, d’une conduite fluide et d’une parfaite connaissance du trafic local pour arriver toujours à l’heure, en toute élégance.",
+  },
+];
+
+const transferRoutes = [
+  "Aéroport Nice Côte d’Azur ➜ Monaco / Menton / Cannes / Saint-Tropez",
+  "Monaco ➜ Nice / Cannes / Aéroport / Italie (Sanremo, Ventimiglia)",
+  "Menton ➜ Nice / Cannes / Aéroport / Marseille / Milan",
+  "Cannes ➜ Monaco / Nice / Saint-Tropez / Gênes",
+];
+
+const galleryImages = [
+  {
+    src: "/herobigtaxi.jpeg",
+    alt: "VTC de luxe sur la Promenade des Anglais à Nice.",
+  },
+  {
+    src: "/taxiinlines.jpeg",
+    alt: "File de véhicules disponibles devant un palace cannois.",
+  },
+  {
+    src: "/niceairpot.jpeg",
+    alt: "Transfert VTC à l'aéroport de Nice Côte d'Azur.",
+  },
+];
+
+export default function Home() {
   return (
     <>
-      <Head>
-        <title>CENTRALE VTC 06 | Réservation au {phoneNumberDisplay}</title>
-        <meta
-          name="description"
-          content={`CENTRALE VTC 06 - Service de VTC sur la Côte d'Azur. Réservation 24h/24 au ${phoneNumberDisplay}`}
-        />
-        <meta
-          name="keywords"
-          content={`vtc, taxi, côte d&apos;azur, nice, ${phoneNumberDisplay}, chauffeur privé`}
-        />
-        <link rel="canonical" href="https://www.centrale-vtc-06.fr" />
-
-        {/* Structured data pour le numéro de téléphone au format E.164 */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
+      <Script
+        id="structured-data-local-business"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            name: "CENTRALE VTC 06",
+            image: "https://www.centrale-vtc-06.fr/herobigtaxi.jpeg",
+            "@id": "https://www.centrale-vtc-06.fr",
+            url: "https://www.centrale-vtc-06.fr",
+            telephone: phoneNumberE164,
+            priceRange: "€€",
+            address: {
+              "@type": "PostalAddress",
+              addressRegion: "Provence-Alpes-Côte d'Azur",
+              addressCountry: "FR",
+            },
+            geo: {
+              "@type": "GeoCoordinates",
+              latitude: 43.7102,
+              longitude: 7.2620,
+            },
+            openingHoursSpecification: {
+              "@type": "OpeningHoursSpecification",
+              dayOfWeek: [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+                "Sunday",
+              ],
+              opens: "00:00",
+              closes: "23:59",
+            },
+            sameAs: [],
+          }),
+        }}
+      />
+      <Script
+        id="structured-data-service"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            serviceType: "Chauffeur Privé VTC",
+            provider: {
               "@type": "LocalBusiness",
               name: "CENTRALE VTC 06",
               telephone: phoneNumberE164,
-              url: "https://www.centrale-vtc-06.fr",
-              address: {
-                "@type": "PostalAddress",
-                addressRegion: "Provence-Alpes-Côte d'Azur",
-                addressCountry: "FR",
+            },
+            areaServed: [
+              {
+                "@type": "City",
+                name: "Nice",
               },
-            }),
-          }}
-        />
+              {
+                "@type": "City",
+                name: "Monaco",
+              },
+              {
+                "@type": "City",
+                name: "Cannes",
+              },
+              {
+                "@type": "City",
+                name: "Menton",
+              },
+            ],
+            hasOfferCatalog: {
+              "@type": "OfferCatalog",
+              name: "Services VTC",
+              itemListElement: [
+                {
+                  "@type": "Offer",
+                  itemOffered: {
+                    "@type": "Service",
+                    name: "Transfert Aéroport Nice",
+                    description:
+                      "Service de transfert depuis et vers l'aéroport de Nice Côte d'Azur",
+                  },
+                },
+                {
+                  "@type": "Offer",
+                  itemOffered: {
+                    "@type": "Service",
+                    name: "VTC Nice Monaco Cannes",
+                    description:
+                      "Transport privé entre Nice, Monaco, Cannes et Menton",
+                  },
+                },
+                {
+                  "@type": "Offer",
+                  itemOffered: {
+                    "@type": "Service",
+                    name: "Chauffeur Privé 24h/24",
+                    description:
+                      "Service de chauffeur privé disponible jour et nuit",
+                  },
+                },
+              ],
+            },
+          }),
+        }}
+      />
+      <Script
+        id="structured-data-faq"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "Quel est le numéro pour réserver un VTC sur la Côte d'Azur ?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Vous pouvez réserver votre chauffeur privé VTC en appelant le 06 30 17 45 63 (format international : +33630174563). Notre centrale est disponible 24h/24 et 7j/7.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Quelles villes desservez-vous ?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "CENTRALE VTC 06 dessert Nice, Monaco, Cannes, Menton, Antibes, Èze, Cap-d'Ail, Roquebrune-Cap-Martin et toute la Côte d'Azur. Nous assurons également les transferts vers l'aéroport de Nice et les trajets longue distance.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Quel est le délai d'arrivée d'un chauffeur ?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Nos chauffeurs arrivent en 10 à 15 minutes après votre réservation pour les demandes immédiates. Pour les réservations à l'avance, nous garantissons la ponctualité à l'heure convenue.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Les tarifs sont-ils fixes ?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Oui, tous nos tarifs sont fixes et confirmés à l'avance. Aucune majoration selon l'affluence ou la météo. Vous connaissez le prix exact avant chaque trajet.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Quels moyens de paiement acceptez-vous ?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Nous acceptons les paiements par carte bancaire, espèces, lien sécurisé et American Express. Des factures détaillées sont disponibles pour les entreprises et agences.",
+                },
+              },
+            ],
+          }),
+        }}
+      />
 
-        {/* Insertion technique du numéro au format E.164 pour les crawlers Google AdsBot */}
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="telephone" content={phoneNumberE164} />
-      </Head>
-
-      <div className="min-h-screen flex flex-col">
-        {/* Numéro de téléphone en texte pur pour les robots de Google */}
-        <div className="text-xs p-1 bg-gray-100 text-center text-black">
-          Pour réserver un VTC, appelez CENTRALE VTC 06 au {phoneNumberDisplay}{" "}
-          ({phoneNumberE164})
-        </div>
-
-        {/* Bannière supérieure avec numéro cliquable */}
-        <div className="bg-indigo-800 text-white py-3 px-4 text-center">
-          <p className="text-base md:text-lg">
-            <span className="mr-2">Réservez votre VTC au</span>
+      <div className="flex min-h-screen flex-col bg-white text-black">
+        {/* Sticky Header */}
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-200 shadow-sm">
+          <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
+            <h2 className={`${montserrat.className} text-xl font-bold text-slate-900 md:text-2xl`}>
+              CENTRALE VTC 06
+            </h2>
             <a
               href={phoneNumberHref}
-              className="font-bold hover:underline inline-flex items-center"
+              className="flex items-center gap-2 rounded-full bg-indigo-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-600 md:px-6 md:py-2.5 md:text-base"
               data-phone={phoneNumberE164}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-5 h-5 mr-1"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
-                />
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 md:h-5 md:w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
               </svg>
               {phoneNumberDisplay}
             </a>
-          </p>
-        </div>
+          </div>
+        </nav>
 
-        {/* Hero Section */}
-        <section className="relative bg-indigo-900 text-white">
-          {/* Background gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-indigo-800 to-blue-900 opacity-90"></div>
+        {/* Spacer for fixed header */}
+        <div className="h-16"></div>
 
-          <div className="relative max-w-6xl mx-auto px-4 py-16 md:py-20">
-            <div className="text-center mb-8">
+        <header className="relative isolate overflow-hidden bg-slate-900 text-white">
+          <div className="absolute inset-0">
+            <Image
+              src="/herobigtaxi.jpeg"
+              alt="Chauffeur VTC accueillant des clients sur la Côte d'Azur."
+              fill
+              priority
+              quality={90}
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+              className="object-cover"
+              sizes="100vw"
+            />
+            <div className="absolute inset-0 bg-slate-900/70" />
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-indigo-900/90 to-blue-900/70" />
+          </div>
+          <div className="relative mx-auto flex max-w-6xl flex-col gap-10 px-4 py-20 text-center md:px-6 md:py-28 lg:py-32">
+            <div className="mx-auto max-w-4xl">
+              <p
+                className={`${inter.className} mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium uppercase tracking-widest`}
+              >
+                Centrale VTC 06 – Transport Premium sur la Côte d'Azur
+              </p>
               <h1
-                className={`${montserrat.className} text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight`}
+                className={`${montserrat.className} text-4xl font-bold sm:text-5xl lg:text-6xl`}
               >
-                CENTRALE VTC <span className="text-amber-400">06</span> – L&apos;Alternative Premium aux Taxis sur la Côte d&apos;Azur
+                Chauffeurs privés VTC à votre service en temps réel à
+                <span className="text-amber-400"> Nice, Cannes, Monaco et Menton</span>
               </h1>
+              <p
+                className={`${inter.className} mt-6 text-lg leading-relaxed text-white/90 md:text-xl`}
+              >
+                Une centrale unique pour vos réservations immédiates, transferts
+                aéroport, événements haut de gamme et trajets longue distance.
+                Nos équipes répondent en moins de cinq minutes et confirment
+                chaque mission avec un tarif fixe.
+              </p>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <a
+                href={phoneNumberHref}
+                className="inline-flex items-center gap-3 rounded-full bg-amber-400 px-8 py-4 text-lg font-semibold text-slate-900 transition hover:bg-amber-300"
+                data-phone={phoneNumberE164}
+              >
+                Réserver maintenant · {phoneNumberDisplay}
+              </a>
+              <a
+                href="#services"
+                className="inline-flex items-center gap-3 rounded-full border border-white/50 px-8 py-4 text-lg font-semibold text-white transition hover:bg-white/10"
+              >
+                Découvrir nos services
+              </a>
+            </div>
+          </div>
+        </header>
 
-              <div className="flex items-center justify-center gap-2 mb-6">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-8 h-8 text-amber-400"
+        <section
+          id="services"
+          className="bg-white px-4 py-16 md:px-6 md:py-20 lg:py-24"
+        >
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-12 text-center">
+              <p
+                className={`${inter.className} text-sm font-semibold uppercase tracking-widest text-indigo-600`}
+              >
+                Centrale VTC 06
+              </p>
+              <h2
+                className={`${montserrat.className} mt-3 text-3xl font-bold text-slate-900 md:text-4xl`}
+              >
+                Une organisation premium pour vos trajets professionnels et
+                touristiques
+              </h2>
+              <p className={`${inter.className} mt-4 text-lg text-slate-600`}>
+                Notre centrale pilote en continu un réseau de chauffeurs privés
+                VTC pour garantir ponctualité, sécurité et présence sur toute la Côte d'Azur.
+              </p>
+            </div>
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+              {highlights.map((item) => (
+                <article
+                  key={item.title}
+                  className="flex flex-col gap-3 rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"
-                  />
-                </svg>
-                <p className={`${inter.className} text-2xl md:text-3xl font-bold text-amber-400`}>
-                  Votre chauffeur privé disponible en 10 à 15 minutes
-                </p>
-              </div>
-
-              {/* Numéro de téléphone affiché en texte pur avant tout élément graphique */}
-              <div className="mt-4 mb-6">
-                <p className="text-lg text-white/90">
-                  Notre numéro de téléphone :
-                </p>
-                <p className="text-2xl font-bold">{phoneNumberDisplay}</p>
-                <p className="text-sm text-white/80">
-                  Format international : {phoneNumberE164}
-                </p>
-              </div>
+                  <h3
+                    className={`${montserrat.className} text-xl font-semibold text-slate-900`}
+                  >
+                    {item.title}
+                  </h3>
+                  <p className={`${inter.className} text-slate-600`}>
+                    {item.description}
+                  </p>
+                </article>
+              ))}
             </div>
+          </div>
+        </section>
 
-            <div className={`${inter.className} max-w-4xl mx-auto text-lg md:text-xl space-y-4 mb-8`}>
-              <p>
-                Bienvenue chez <strong>Centrale VTC 06</strong>, la <strong>1ʳᵉ centrale de réservation de chauffeurs privés du 06</strong>.
-                Basée entre Nice, Monaco, Menton et Cannes, nous regroupons les meilleurs chauffeurs professionnels de la Côte d&apos;Azur pour vos trajets personnels, professionnels et événements.
-              </p>
-              <p>
-                Nos chauffeurs sont disponibles <strong>24h/24 et 7j/7</strong>, pour tous vos déplacements au départ ou à destination de l&apos;aéroport de Nice, des gares, hôtels, ports, ou villas privées.
-              </p>
-              <p>
-                <strong>Plus besoin de chercher un taxi</strong> : avec Centrale VTC 06, vous obtenez un chauffeur en quelques minutes, à un tarif fixe et transparent, sans surprise ni majoration.
-              </p>
-            </div>
-
-            {/* Bouton d&apos;appel principal */}
+        <section
+          id="territoire"
+          className="bg-slate-50 px-4 py-16 md:px-6 md:py-20 lg:py-24"
+        >
+          <div className="mx-auto max-w-6xl space-y-12">
             <div className="text-center">
-              <a
-                href={phoneNumberHref}
-                className="group bg-white text-indigo-900 rounded-full px-8 py-4 w-auto font-bold text-xl md:text-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 inline-flex items-center gap-3"
-                data-phone={phoneNumberE164}
+              <p
+                className={`${inter.className} text-sm font-semibold uppercase tracking-widest text-indigo-600`}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6 text-amber-500"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
-                  />
-                </svg>
-                {phoneNumberDisplay}
-              </a>
-            </div>
-          </div>
-        </section>
-
-        {/* Section contact explicite */}
-        <section className="py-8 bg-white border-b">
-          <div className="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-center gap-6">
-            <div className="text-center sm:text-left">
-              <h2 className="text-xl font-bold mb-1 text-black">Besoin d&apos;un VTC ?</h2>
-              <p className="text-black">Service disponible 24h/24, 7j/7</p>
-            </div>
-            <div>
-              <a
-                href={phoneNumberHref}
-                className="bg-indigo-700 hover:bg-indigo-800 text-white px-6 py-3 rounded-lg font-semibold inline-flex items-center gap-2"
-                data-phone={phoneNumberE164}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-5 h-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
-                  />
-                </svg>
-                Appeler le {phoneNumberDisplay}
-              </a>
-            </div>
-          </div>
-        </section>
-
-        {/* Why Choose Section */}
-        <section className="py-16 md:py-20 px-4 bg-white">
-          <div className="max-w-6xl mx-auto">
-            <h2
-              className={`${montserrat.className} text-3xl md:text-4xl font-bold text-center mb-12 text-black`}
-            >
-              Pourquoi choisir <span className="text-indigo-700">CENTRALE VTC 06</span> ?
-            </h2>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-8 h-8 text-green-600"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className={`${montserrat.className} text-lg font-bold mb-2 text-black`}>
-                    Tarifs fixes
-                  </h3>
-                  <p className="text-black">
-                    Vous connaissez le prix avant de monter à bord
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-8 h-8 text-green-600"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className={`${montserrat.className} text-lg font-bold mb-2 text-black`}>
-                    Service rapide
-                  </h3>
-                  <p className="text-black">
-                    Chauffeur en 10 à 15 minutes selon votre zone
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-8 h-8 text-green-600"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className={`${montserrat.className} text-lg font-bold mb-2 text-black`}>
-                    Disponibilité 24h/24 et 7j/7
-                  </h3>
-                  <p className="text-black">
-                    Service disponible à toute heure
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-8 h-8 text-green-600"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className={`${montserrat.className} text-lg font-bold mb-2 text-black`}>
-                    Véhicules haut de gamme
-                  </h3>
-                  <p className="text-black">
-                    Mercedes Classe E, EQE, V-Class, Tesla…
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-8 h-8 text-green-600"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className={`${montserrat.className} text-lg font-bold mb-2 text-black`}>
-                    Chauffeurs expérimentés
-                  </h3>
-                  <p className="text-black">
-                    Discrets et bilingues
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-8 h-8 text-green-600"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className={`${montserrat.className} text-lg font-bold mb-2 text-black`}>
-                    Paiement sécurisé
-                  </h3>
-                  <p className="text-black">
-                    CB, espèces, facture pro sur demande
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-8 h-8 text-green-600"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className={`${montserrat.className} text-lg font-bold mb-2 text-black`}>
-                    Service professionnel
-                  </h3>
-                  <p className="text-black">
-                    Pour particuliers, hôtels et entreprises
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Airport Transfers Section */}
-        <section className="py-16 md:py-20 px-4 bg-gradient-to-br from-indigo-50 to-blue-50">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-10 h-10 text-indigo-700"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
-                />
-              </svg>
+                Côte d'Azur & Riviera
+              </p>
               <h2
-                className={`${montserrat.className} text-3xl md:text-4xl font-bold text-black`}
+                className={`${montserrat.className} mt-3 text-3xl font-bold text-slate-900 md:text-4xl`}
               >
-                Spécialiste des transferts aéroport & longue distance
+                Service VTC premium dans les plus belles villes de la Côte d'Azur
               </h2>
-            </div>
-
-            <div className={`${inter.className} max-w-4xl mx-auto mb-8`}>
-              <h3 className="text-xl font-bold mb-4 text-black">
-                Nos transferts les plus demandés :
-              </h3>
-              <ul className="space-y-3 text-lg text-black">
-                <li className="flex items-start gap-3">
-                  <span className="text-indigo-600 mt-1">➜</span>
-                  <span><strong>Aéroport Nice</strong> ➜ Monaco / Menton / Cannes / Saint-Tropez</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-indigo-600 mt-1">➜</span>
-                  <span><strong>Monaco</strong> ➜ Nice / Cannes / Aéroport / Italie (Sanremo, Ventimiglia)</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-indigo-600 mt-1">➜</span>
-                  <span><strong>Menton</strong> ➜ Nice / Cannes / Aéroport / Marseille / Milan</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-indigo-600 mt-1">➜</span>
-                  <span><strong>Cannes</strong> ➜ Monaco / Nice / Saint-Tropez / Gênes</span>
-                </li>
-              </ul>
-              <p className="mt-6 text-black">
-                Nous assurons également les <strong>retours tardifs, soirées, mariages, séminaires, événements privés et transferts VIP</strong> avec la plus grande ponctualité.
+              <p className={`${inter.className} mt-4 text-lg text-slate-600`}>
+                Des chauffeurs professionnels à votre disposition pour tous vos déplacements d'affaires ou de loisirs, dans un confort absolu.
               </p>
             </div>
-          </div>
-        </section>
-
-        {/* Service Zones Section */}
-        <section className="py-16 md:py-20 px-4 bg-gray-50">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex items-center justify-center gap-3 mb-8">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-10 h-10 text-indigo-700"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
-                />
-              </svg>
-              <h2
-                className={`${montserrat.className} text-3xl md:text-4xl font-bold text-gray-800`}
-              >
-                Nos zones de service
-              </h2>
-            </div>
-
-            <div className={`${inter.className} grid md:grid-cols-2 lg:grid-cols-3 gap-6 text-lg`}>
-              <div className="bg-white p-6 rounded-lg shadow-md border border-indigo-100">
-                <h3 className="font-bold text-indigo-800 mb-3">Alpes-Maritimes Est</h3>
-                <ul className="space-y-2 text-black">
-                  <li>• Nice, Cagnes-sur-Mer, Saint-Laurent-du-Var</li>
-                  <li>• Monaco, Beausoleil, Cap-d&apos;Ail</li>
-                  <li>• Menton, Roquebrune-Cap-Martin</li>
-                </ul>
-              </div>
-
-              <div className="bg-white p-6 rounded-lg shadow-md border border-indigo-100">
-                <h3 className="font-bold text-indigo-800 mb-3">Alpes-Maritimes Ouest</h3>
-                <ul className="space-y-2 text-black">
-                  <li>• Cannes, Antibes, Juan-les-Pins</li>
-                </ul>
-              </div>
-
-              <div className="bg-white p-6 rounded-lg shadow-md border border-indigo-100">
-                <h3 className="font-bold text-indigo-800 mb-3">Var & Longue Distance</h3>
-                <ul className="space-y-2 text-black">
-                  <li>• Saint-Tropez, Fréjus, Toulon</li>
-                </ul>
-              </div>
-
-              <div className="bg-white p-6 rounded-lg shadow-md border border-indigo-100">
-                <h3 className="font-bold text-indigo-800 mb-3">Italie frontalière</h3>
-                <ul className="space-y-2 text-black">
-                  <li>• Vintimille, Sanremo</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Numéro de téléphone en texte clair pour Google Ads */}
-        <section className="bg-gray-100 py-8 text-center">
-          <div className="max-w-4xl mx-auto px-4">
-            <p className="text-gray-600 mb-2">
-              Réservez votre chauffeur privé CENTRALE VTC 06 au :
-            </p>
-            <p className="text-indigo-800 text-3xl font-bold mb-2">
-              {phoneNumberDisplay}
-            </p>
-            <p className="text-gray-500">
-              Format international : {phoneNumberE164}
-            </p>
-          </div>
-        </section>
-
-        {/* CTA Section avec numéro bien visible */}
-        <section className="bg-indigo-900 py-14 text-white">
-          <div className="max-w-5xl mx-auto px-4">
-            <div className="text-center mb-10">
-              <h2
-                className={`${montserrat.className} text-3xl md:text-4xl font-bold mb-6`}
-              >
-                Réservez votre chauffeur maintenant
-              </h2>
-
-              <div className="w-full max-w-lg mx-auto p-6 bg-white/10 rounded-lg mb-4">
-                <div className="flex items-center justify-center gap-2 mb-3">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6 text-amber-400"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
-                    />
-                  </svg>
-                  <p className="text-white text-lg">Réservation instantanée au</p>
-                </div>
-                <p className="text-4xl font-bold text-amber-400 mb-2">
-                  {phoneNumberDisplay}
-                </p>
-                <p className="text-sm text-white/80 mb-4">
-                  Format international : {phoneNumberE164}
-                </p>
-                <p className="text-white/90">Ou via WhatsApp, SMS, ou notre formulaire de réservation en ligne.</p>
-              </div>
-
-              <div className="space-y-3 mb-6">
-                <p className="text-xl flex items-center justify-center gap-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6 text-amber-400"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                    />
-                  </svg>
-                  Disponible 24h/24 – Chauffeur privé en moins de 15 minutes
-                </p>
-                <p className="text-xl flex items-center justify-center gap-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6 text-amber-400"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
-                    />
-                  </svg>
-                  Service premium sur toute la Côte d&apos;Azur
-                </p>
-              </div>
-            </div>
-
-            <div className="border-t border-white/20 pt-8">
-              <div className="flex items-center justify-center gap-3 mb-6">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-10 h-10 text-amber-400"
+            <div className="grid gap-10 lg:grid-cols-2">
+              {cities.map((city) => (
+                <article
+                  key={city.id}
+                  className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-lg transition hover:-translate-y-1 hover:shadow-2xl"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"
-                  />
-                </svg>
-                <h3 className={`${montserrat.className} text-2xl md:text-3xl font-bold`}>
-                  CENTRALE VTC 06 – La référence locale
-                </h3>
-              </div>
+                  <div className="relative h-64 w-full">
+                    <Image
+                      src={city.image}
+                      alt={city.imageAlt}
+                      fill
+                      loading="lazy"
+                      quality={85}
+                      className="object-cover transition duration-700 group-hover:scale-105"
+                      sizes="(min-width: 1024px) 40vw, 100vw"
+                    />
+                    {/* Hidden taxi text for SEO - positioned behind image */}
+                    <div className="absolute inset-0 -z-10 opacity-0 pointer-events-none" aria-hidden="true">
+                      <h4
+                        className={`${montserrat.className} text-xl font-semibold text-slate-900`}
+                      >
+                        {city.taxiTitle}
+                      </h4>
+                      <p
+                        className={`${inter.className} mt-3 text-base leading-relaxed text-slate-700`}
+                      >
+                        {city.taxiText}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="space-y-8 px-6 py-8 md:px-8">
+                    <div className="space-y-4">
+                      <h3
+                        className={`${montserrat.className} text-2xl font-semibold text-slate-900`}
+                      >
+                        {city.vtcTitle}
+                      </h3>
+                      <p className={`${inter.className} text-lg text-slate-700`}>
+                        {city.vtcText}
+                      </p>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
 
-              <div className={`${inter.className} max-w-3xl mx-auto space-y-4 text-lg text-center`}>
-                <p>
-                  <strong>Fini les longues attentes et les tarifs variables :</strong><br />
-                  Avec Centrale VTC 06, vous bénéficiez de la rapidité d&apos;un taxi et du confort d&apos;un chauffeur privé.
+        <section className="bg-white px-4 py-16 md:px-6 md:py-20 lg:py-24">
+          <div className="mx-auto max-w-6xl grid gap-12 lg:grid-cols-[3fr_2fr] lg:items-center">
+            <div>
+              <p
+                className={`${inter.className} text-sm font-semibold uppercase tracking-widest text-indigo-600`}
+              >
+                Transferts longue distance
+              </p>
+              <h2
+                className={`${montserrat.className} mt-3 text-3xl font-bold text-slate-900 md:text-4xl`}
+              >
+                Aéroport de Nice, Croisette, Port Hercule : une équipe qui suit
+                vos trajets de bout en bout
+              </h2>
+              <p className={`${inter.className} mt-4 text-lg text-slate-600`}>
+                Notre centrale surveille chaque vol et chaque train. Les
+                chauffeurs reçoivent vos instructions en direct et ajustent les
+                horaires selon vos aléas de déplacement.
+              </p>
+              <ul
+                className={`${inter.className} mt-6 space-y-3 text-lg text-slate-700`}
+              >
+                {transferRoutes.map((route) => (
+                  <li key={route} className="flex items-start gap-3">
+                    <span className="mt-1 text-indigo-600">➜</span>
+                    <span>{route}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="grid gap-4 rounded-3xl bg-slate-900/90 p-8 text-white shadow-xl">
+              <h3
+                className={`${montserrat.className} text-2xl font-semibold text-amber-300`}
+              >
+                Réservation immédiate
+              </h3>
+              <p className={`${inter.className} text-base leading-relaxed`}>
+                Une équipe bilingue répond 7j/7 pour vos demandes :
+                transferts aéroport, roadshows, mariages, séminaires ou
+                circuits touristiques sur mesure. Confirmation instantanée par
+                SMS et e-mail.
+              </p>
+              <div className="rounded-2xl border border-white/30 bg-white/10 p-6 text-center">
+                <p className={`${inter.className} text-sm uppercase tracking-widest`}>
+                  Pour réserver
                 </p>
-                <p>
-                  Notre équipe surveille en temps réel les disponibilités des chauffeurs pour garantir une réponse immédiate à chaque demande.
-                </p>
-                <p className="text-xl font-semibold text-amber-400">
-                  Notre objectif : offrir le meilleur service de transport privé sur la Côte d&apos;Azur à un prix juste, pour que chaque trajet soit un moment agréable.
-                </p>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
                 <a
                   href={phoneNumberHref}
-                  className="w-full sm:w-auto bg-white text-indigo-900 rounded-lg px-8 py-4 font-bold text-xl inline-flex items-center justify-center gap-2 hover:bg-amber-400 transition-colors duration-300 shadow-lg"
+                  className="mt-3 inline-flex items-center justify-center rounded-full bg-amber-400 px-6 py-3 text-lg font-semibold text-slate-900 transition hover:bg-amber-300"
                   data-phone={phoneNumberE164}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
-                    />
-                  </svg>
-                  Appeler {phoneNumberDisplay}
+                  {phoneNumberDisplay}
                 </a>
+                <p className={`${inter.className} mt-2 text-xs text-white/70`}>
+                  Format international : {phoneNumberE164}
+                </p>
               </div>
             </div>
           </div>
         </section>
 
-
-        {/* Footer avec numéro de téléphone bien visible */}
-        <footer className="bg-gray-900 text-white py-12">
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="grid md:grid-cols-2 gap-8">
-              <div>
-                <h3
-                  className={`${montserrat.className} text-2xl font-bold mb-4`}
-                >
-                  CENTRALE VTC <span className="text-amber-400">06</span>
-                </h3>
-                <p className="mb-4 text-gray-300">
-                  Service de transport privé de qualité sur toute la Côte
-                  d&apos;Azur. Nous desservons Nice, Cannes, Monaco,
-                  Saint-Tropez et toutes les destinations de la région.
-                </p>
-                <div className="mb-4">
-                  <p className="text-white mb-2">
-                    Pour réserver votre VTC, appelez-nous :
-                  </p>
-                  <div className="flex items-center gap-2 text-amber-400 font-bold text-lg">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-5 h-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
-                      />
-                    </svg>
-                    <a
-                      href={phoneNumberHref}
-                      className="hover:underline"
-                      data-phone={phoneNumberE164}
-                    >
-                      {phoneNumberDisplay}
-                    </a>
-                  </div>
-                  <p className="text-sm text-gray-400 mt-1">
-                    Format international : {phoneNumberE164}
-                  </p>
-                </div>
-              </div>
-              <div className="md:text-right">
-                <h4
-                  className={`${montserrat.className} text-lg font-bold mb-4`}
-                >
-                  Liens Rapides
-                </h4>
-                <ul className="space-y-2">
-                  <li>
-                    <Link
-                      href="/services"
-                      className="text-gray-300 hover:text-white hover:underline transition-colors"
-                    >
-                      Nos Services
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/reservation"
-                      className="text-gray-300 hover:text-white hover:underline transition-colors"
-                    >
-                      Réservation
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/tarifs"
-                      className="text-gray-300 hover:text-white hover:underline transition-colors"
-                    >
-                      Tarifs
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/contact"
-                      className="text-gray-300 hover:text-white hover:underline transition-colors"
-                    >
-                      Contact
-                    </Link>
-                  </li>
-                </ul>
-              </div>
+        <section className="bg-slate-900 px-4 py-16 text-white md:px-6 md:py-20">
+          <div className="mx-auto flex max-w-6xl flex-col gap-10 lg:flex-row lg:items-center">
+            <div className="w-full lg:w-1/2">
+              <h2
+                className={`${montserrat.className} text-3xl font-bold md:text-4xl`}
+              >
+                La Côte d’Azur en images
+              </h2>
+              <p className={`${inter.className} mt-4 text-base leading-relaxed`}>
+                Découvrez les plus beaux panoramas de la Côte d'Azur à bord de nos véhicules premium : Croisette, Promenade des Anglais, Port Hercule, vieille ville de Menton. Nos chauffeurs vous font vivre une expérience unique dans un cadre d'exception.
+              </p>
             </div>
+            <div className="grid w-full gap-6 sm:grid-cols-2 lg:w-1/2">
+              {galleryImages.map((image) => (
+                <figure
+                  key={image.src}
+                  className="overflow-hidden rounded-3xl border border-white/10 bg-white/5"
+                >
+                  <div className="relative h-48 w-full">
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      fill
+                      loading="lazy"
+                      quality={80}
+                      className="object-cover"
+                      sizes="(min-width: 1024px) 25vw, 50vw"
+                    />
+                  </div>
+                  <figcaption
+                    className={`${inter.className} px-4 py-3 text-sm text-white/80`}
+                  >
+                    {image.alt}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
 
-            {/* Bande avec numéro de téléphone explicite */}
-            <div className="border-t border-gray-700 mt-8 pt-8 pb-4 text-center">
-              <p className="text-gray-400 mb-2">
-                Pour toute réservation de VTC, appelez-nous au :
+        <section
+          id="contact"
+          className="bg-white px-4 py-16 md:px-6 md:py-20 lg:py-24"
+        >
+          <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[3fr_2fr] lg:items-center">
+            <div>
+              <p
+                className={`${inter.className} text-sm font-semibold uppercase tracking-widest text-indigo-600`}
+              >
+                Centrale VTC 06
+              </p>
+              <h2
+                className={`${montserrat.className} mt-3 text-3xl font-bold text-slate-900 md:text-4xl`}
+              >
+                Joignez immédiatement un coordinateur dédié
+              </h2>
+              <p className={`${inter.className} mt-4 text-lg text-slate-600`}>
+                Vous avez un vol à suivre, un planning d’événement à gérer ou
+                un déplacement surprise à organiser ? Nous mobilisons le réseau
+                le plus proche de votre demande pour garantir l’arrivée du
+                chauffeur en 10 à 15 minutes.
+              </p>
+              <ul
+                className={`${inter.className} mt-6 space-y-2 text-base text-slate-700`}
+              >
+                <li>• Assistance francophone et anglophone</li>
+                <li>• Factures détaillées pour entreprises et agences</li>
+                <li>• Paiement CB, espèces, lien sécurisé, American Express</li>
+              </ul>
+            </div>
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-8">
+              <h3
+                className={`${montserrat.className} text-2xl font-semibold text-slate-900`}
+              >
+                Numéro unique de réservation
+              </h3>
+              <p className={`${inter.className} mt-3 text-base text-slate-600`}>
+                Ce numéro est actif 7j/7, 24h/24 pour la Côte d’Azur et les
+                liaisons internationales.
               </p>
               <a
                 href={phoneNumberHref}
-                className="text-xl md:text-2xl font-bold text-amber-400 hover:underline inline-flex items-center justify-center gap-2"
+                className="mt-6 flex w-full items-center justify-center rounded-full bg-indigo-700 px-6 py-3 text-lg font-semibold text-white transition hover:bg-indigo-600"
                 data-phone={phoneNumberE164}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
-                  />
-                </svg>
                 {phoneNumberDisplay}
               </a>
-            </div>
-
-            <div className="border-t border-gray-800 mt-4 pt-4 text-sm text-gray-500 text-center">
-              <p>
-                &copy; {new Date().getFullYear()} CENTRALE VTC 06. Tous droits
-                réservés.
-                <span className="block md:inline md:ml-2">
-                  Pour nous joindre : {phoneNumberDisplay}
-                </span>
+              <p className={`${inter.className} mt-2 text-center text-xs text-slate-500`}>
+                Format international : {phoneNumberE164}
               </p>
             </div>
           </div>
+        </section>
+
+        <footer className="bg-slate-950 px-4 py-12 text-white md:px-6">
+          <div className="mx-auto flex max-w-6xl flex-col gap-8 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h3
+                className={`${montserrat.className} text-xl font-semibold text-amber-300`}
+              >
+                Centrale VTC 06
+              </h3>
+              <p className={`${inter.className} mt-2 text-sm text-white/70`}>
+                Nice · Monaco · Menton · Cannes · Antibes · Èze · Cap-d’Ail ·
+                Roquebrune-Cap-Martin.
+              </p>
+              <p className={`${inter.className} mt-1 text-sm text-white/70`}>
+                Chauffeurs privés VTC, conciergerie et événements.
+              </p>
+            </div>
+            <div className="text-center md:text-right">
+              <p className={`${inter.className} text-xs uppercase tracking-widest text-white/60`}>
+                Réservation 24h/24
+              </p>
+              <a
+                href={phoneNumberHref}
+                className="mt-2 inline-flex items-center justify-center rounded-full bg-amber-400 px-6 py-3 text-base font-semibold text-slate-900 transition hover:bg-amber-300"
+                data-phone={phoneNumberE164}
+              >
+                {phoneNumberDisplay}
+              </a>
+              <p className={`${inter.className} mt-1 text-xs text-white/60`}>
+                {phoneNumberE164}
+              </p>
+            </div>
+          </div>
+          <div className="mx-auto mt-10 max-w-6xl border-t border-white/10 pt-6 text-center text-xs text-white/50">
+            © {new Date().getFullYear()} Centrale VTC 06 – Tous droits réservés.
+          </div>
         </footer>
-
-        {/* Barre de contact fixe mobile avec numéro de téléphone (visible uniquement sur mobile) */}
-        <div className="fixed bottom-0 left-0 right-0 bg-indigo-800 text-white py-3 px-4 text-center md:hidden z-50">
-          <a
-            href={phoneNumberHref}
-            className="font-bold text-lg flex items-center justify-center gap-2"
-            data-phone={phoneNumberE164}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-5 h-5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
-              />
-            </svg>
-            Appelez maintenant : {phoneNumberDisplay}
-          </a>
-        </div>
-
-        {/* Commentaire HTML caché pour les crawlers avec numéro au format E.164 */}
-        {/* Le commentaire est visible dans le code source HTML mais pas pour l&apos;utilisateur */}
-        <div
-          dangerouslySetInnerHTML={{
-            __html: `<!-- 
-            CENTRALE VTC 06
-            Numéro de téléphone : ${phoneNumberDisplay}
-            Numéro international : ${phoneNumberE164}
-            -->`,
-          }}
-        />
       </div>
     </>
   );
