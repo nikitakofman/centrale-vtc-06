@@ -312,7 +312,7 @@ export default function Home() {
               <p
                 className={`${inter.className} mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium uppercase tracking-widest`}
               >
-                Centrale VTC 06 – Transport Premium sur la Côte d'Azur
+                Centrale VTC 06 – Transport Premium sur la Côte d&apos;Azur
               </p>
               <h1
                 className={`${montserrat.className} text-4xl font-bold sm:text-5xl lg:text-6xl`}
@@ -366,7 +366,7 @@ export default function Home() {
               </h2>
               <p className={`${inter.className} mt-4 text-lg text-slate-600`}>
                 Notre centrale pilote en continu un réseau de chauffeurs privés
-                VTC pour garantir ponctualité, sécurité et présence sur toute la Côte d'Azur.
+                VTC pour garantir ponctualité, sécurité et présence sur toute la Côte d&apos;Azur.
               </p>
             </div>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
@@ -398,15 +398,15 @@ export default function Home() {
               <p
                 className={`${inter.className} text-sm font-semibold uppercase tracking-widest text-indigo-600`}
               >
-                Côte d'Azur & Riviera
+                Côte d&apos;Azur & Riviera
               </p>
               <h2
                 className={`${montserrat.className} mt-3 text-3xl font-bold text-slate-900 md:text-4xl`}
               >
-                Service VTC premium dans les plus belles villes de la Côte d'Azur
+                Service VTC premium dans les plus belles villes de la Côte d&apos;Azur
               </h2>
               <p className={`${inter.className} mt-4 text-lg text-slate-600`}>
-                Des chauffeurs professionnels à votre disposition pour tous vos déplacements d'affaires ou de loisirs, dans un confort absolu.
+                Des chauffeurs professionnels à votre disposition pour tous vos déplacements d&apos;affaires ou de loisirs, dans un confort absolu.
               </p>
             </div>
             <div className="grid gap-10 lg:grid-cols-2">
@@ -527,7 +527,7 @@ export default function Home() {
                 La Côte d’Azur en images
               </h2>
               <p className={`${inter.className} mt-4 text-base leading-relaxed`}>
-                Découvrez les plus beaux panoramas de la Côte d'Azur à bord de nos véhicules premium : Croisette, Promenade des Anglais, Port Hercule, vieille ville de Menton. Nos chauffeurs vous font vivre une expérience unique dans un cadre d'exception.
+                Découvrez les plus beaux panoramas de la Côte d&apos;Azur à bord de nos véhicules premium : Croisette, Promenade des Anglais, Port Hercule, vieille ville de Menton. Nos chauffeurs vous font vivre une expérience unique dans un cadre d&apos;exception.
               </p>
             </div>
             <div className="grid w-full gap-6 sm:grid-cols-2 lg:w-1/2">
@@ -595,7 +595,7 @@ export default function Home() {
                 Numéro unique de réservation
               </h3>
               <p className={`${inter.className} mt-3 text-base text-slate-600`}>
-                Ce numéro est actif 7j/7, 24h/24 pour la Côte d’Azur et les
+                Ce numéro est actif 7j/7, 24h/24 pour la Côte d&apos;Azur et les
                 liaisons internationales.
               </p>
               <a
